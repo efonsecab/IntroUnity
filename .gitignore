@@ -30,3 +30,4 @@ sysinfo.txt
 *.unitypackage
 UnityProject/IntroUnity/Library/
 UnityProject/IntroUnity/Builds/
+UnityProject/IntroUnity/Temp/
