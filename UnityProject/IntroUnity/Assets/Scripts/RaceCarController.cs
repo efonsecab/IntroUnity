@@ -9,11 +9,13 @@ public class RaceCarController : MonoBehaviour
     public int CurrentSpeed = 0;
     public int CurrentGear = 1;
     private int TotalGears = 5;
+    public int Energy = 100;
     private Rigidbody _rigidBody = null;
     public AudioSource AudioSource = null;
     public AudioClip CurrentClip = null;
     private AudioClip AudioClip_TheRush = null;
     public int Lap = 0;
+
     // Use this for initialization
     void Start()
     {
@@ -88,6 +90,14 @@ public class RaceCarController : MonoBehaviour
         {
             Debug.Log("New Lap!");
             Lap += 1;
+        }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Dangerous")
+        {
+            this.Energy -= 5;
         }
     }
 }
