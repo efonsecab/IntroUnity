@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum PlayerIdentifier
+{
+    Player1,
+    Player2
+}
+
 [RequireComponent(typeof(AudioSource))]
 public class RaceCarController : MonoBehaviour
 {
+    public PlayerIdentifier Player = PlayerIdentifier.Player1;
     private Vector3 OriginalPosition;
     private Quaternion OriginalRotation;
     public int CurrentSpeed = 0;
@@ -32,7 +39,20 @@ public class RaceCarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        float v = 0;
+        float h = 0;
+        switch (this.Player)
+        {
+            case PlayerIdentifier.Player1:
+                h = Input.GetAxis("Horizontal_Keyboard");
+                v = Input.GetAxis("Vertical_Keyboard");
+                break;
+            case PlayerIdentifier.Player2:
+                h = Input.GetAxis("Horizontal_Joystick1");
+                v = Input.GetAxis("Vertical_Joystick1");
+                break;
+        }
+        if (v > 0)
         {
             int newSpeed = CurrentSpeed + 1;
             var maxSpeedForCurrentGear = CurrentGear * 20;
@@ -68,7 +88,6 @@ public class RaceCarController : MonoBehaviour
         }
         //if (_rigidBody.velocity.y >= 0)
         {
-            var h = Input.GetAxis("Horizontal");
             if (h != 0)
             {
                 this.transform.Rotate(new Vector3(0, h, 0));
