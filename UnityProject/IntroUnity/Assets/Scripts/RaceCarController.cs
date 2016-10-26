@@ -7,7 +7,6 @@ public enum PlayerIdentifier
     Player2
 }
 
-[RequireComponent(typeof(AudioSource))]
 public class RaceCarController : MonoBehaviour
 {
     public PlayerIdentifier Player = PlayerIdentifier.Player1;
@@ -22,18 +21,24 @@ public class RaceCarController : MonoBehaviour
     public AudioClip CurrentClip = null;
     private AudioClip AudioClip_TheRush = null;
     public int Lap = 0;
+    public AudioController AudioController = null;
 
     // Use this for initialization
     void Start()
     {
         this.OriginalPosition = this.transform.position;
         this.OriginalRotation = this.transform.rotation;
-        this.AudioSource = GetComponent<AudioSource>();
+        this.AudioController = GameObject.FindObjectOfType<AudioController>();
+        this.AudioSource = this.AudioController.GetComponent<AudioSource>();
         this._rigidBody = GetComponent<Rigidbody>();
         this.AudioClip_TheRush = Resources.Load<AudioClip>(@"Music\The Rush");
         this.CurrentClip = this.AudioClip_TheRush;
-        this.AudioSource.clip = this.CurrentClip;
-        this.AudioSource.loop = true;
+        if (!this.AudioSource.isPlaying)
+        {
+            this.AudioSource.clip = this.CurrentClip;
+            this.AudioSource.loop = true;
+            this.AudioSource.Play();
+        }
     }
 
     // Update is called once per frame
@@ -68,12 +73,6 @@ public class RaceCarController : MonoBehaviour
         }
         if (CurrentSpeed > 0)
         {
-            if (!this.AudioSource.isPlaying)
-                this.AudioSource.Play();
-            else
-            {
-                this.AudioSource.UnPause();
-            }
             var step = CurrentSpeed * Time.deltaTime;
             var forward = this.transform.right;
             //Debug.Log(forward);
@@ -81,11 +80,11 @@ public class RaceCarController : MonoBehaviour
             //Debug.Log("New Position: " + newTarget);
             this.transform.position = Vector3.MoveTowards(this.transform.position, newTarget, step);
         }
-        else
-        {
-            if (this.AudioSource.isPlaying)
-                this.AudioSource.Pause();
-        }
+        //else
+        //{
+        //    if (this.AudioSource.isPlaying)
+        //        this.AudioSource.Pause();
+        //}
         //if (_rigidBody.velocity.y >= 0)
         {
             if (h != 0)
