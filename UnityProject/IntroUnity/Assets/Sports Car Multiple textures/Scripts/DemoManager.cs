@@ -64,7 +64,7 @@ public class DemoManager : MonoBehaviour {
 	}
 
 	public void changeColor(int no){
-		sportsCars [index].transform.FindChild("body").GetComponent<MeshRenderer> ().materials [0].color = colorButtons[no].color;
+		sportsCars [index].transform.Find("body").GetComponent<MeshRenderer> ().materials [0].color = colorButtons[no].color;
 	
 	
 	}
